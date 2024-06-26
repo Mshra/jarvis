@@ -23,10 +23,9 @@ export default function SearchBar() {
   }, [])
 
   function handleSubmit(event: any) {
-    // prevents reloading of site that resets the component states
     event?.preventDefault()
     setPrompt("")
-    // call gemini api with 'prompt' as prompt text.
+    // TODO: call gemini api with 'prompt' as prompt text.
 
 
     // edit promptHistory
@@ -37,8 +36,9 @@ export default function SearchBar() {
 
   const handlePromptHistory = () => {
     const mapPromptHistory = promptHistory.map(promptString =>
-      <li key={Math.random() * 10}>
+      <li key={Math.random() * 10} className="flex">
         {promptString}
+        <input type="image" src="../../public/close.svg" alt="submit" className="text-right" />
       </li>
     )
 
