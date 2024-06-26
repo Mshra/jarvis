@@ -1,9 +1,9 @@
-function App() {
+import SearchBar from "./components/Search"
+
+export default function App() {
   return (
-    <>
-      <p>hello, world</p>
-    </>
+    <div className="min-h-screen min-w-screen flex items-center justify-center">
+      <SearchBar />
+    </div>
   )
 }
-
-export default App
