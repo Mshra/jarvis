@@ -69,10 +69,19 @@ export default function SearchBar() {
   return (
     <div className="w-9/12 md:w-3/6 lg:w-2/6 flex-col">
       <form onSubmit={handleSubmit} className="flex items-center justify-center h-10 w-full p-2 border-2 border-black rounded-md">
-        <input type="text" placeholder={placeholderString} className="outline-none w-11/12" value={prompt} onChange={(event) => setPrompt(event.target.value)} />
+        <input type="text" placeholder={placeholderString} className="outline-none w-11/12" value={prompt} onChange={event => setPrompt(event.target.value)} />
         <input type="image" src={searchIcon} alt="search" className="h-8" />
       </form>
       {prompt && handlePromptHistory()}
     </div>
   )
 }
+
+/*
+ * TODO: [ ] refactor out the styles into light mode, dark mode and error mode into a different file.
+ *       [ ] gemini is returning non-continuous response as markdown, to display the response convert it into either html or normal text atleast.
+ *       [ ] style prompt history lists
+ *       [ ] animate the placeholders with a typing effect
+ *
+ * FIX: [ ] promptHistory allow duplicate values, prevent that.
+ */
