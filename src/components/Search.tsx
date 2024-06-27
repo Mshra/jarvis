@@ -27,31 +27,32 @@ export default function SearchBar() {
 
   function handleSubmit(event: any) {
     event?.preventDefault()
-    run(prompt)
-    setPrompt("")
-    // TODO: call gemini api with 'prompt' as prompt text.
 
-    // edit promptHistory
-    // if (prompt.length > 0) {
-    //   const _arr = promptHistory.slice()
-    //   _arr.push(prompt)
-    //   setPromptHistory(_arr)
-    // } else {
-    //   console.error('prompt length not sufficient')
-    // }
+    if (prompt.length > 10) {
+      const _arr = promptHistory.slice()
+      _arr.push(prompt)
+      setPromptHistory(_arr)
+      // run(prompt) -- runs the generative ai
+    } else {
+      console.error('prompt length not sufficient')
+    }
+    setPrompt("")
   }
 
   const handlePromptHistory = () => {
     function handlePromptDelete() {
-      console.log('hello, world')
+      const _arr = promptHistory.slice()
+      _arr.splice(_arr.indexOf(prompt), 1)
+      setPromptHistory(_arr)
+      setPrompt("")
     }
 
     const mapPromptHistory = promptHistory.map(promptString =>
-      <li key={Math.random() * 10} className="bg-[#fecdd3] overflow-y-auto my-1 px-1 flex">
-        <div className="w-4/5">
+      <li key={Math.random() * 10} onClick={() => setPrompt(promptString)} className="bg-[#fecdd3] overflow-y-auto my-1 px-1 flex items-center justify-center last:rounded-b-md hover:border hover:border-black">
+        <div className="w-11/12 break-all">
           {promptString}
         </div>
-        <input type="image" src={closeIcon} alt="close" onClick={handlePromptDelete} />
+        <input type="image" src={closeIcon} alt="close" onClick={handlePromptDelete} className="w-1/12 h-10" />
       </li>
     )
 
@@ -71,7 +72,7 @@ export default function SearchBar() {
         <input type="text" placeholder={placeholderString} className="outline-none w-11/12" value={prompt} onChange={(event) => setPrompt(event.target.value)} />
         <input type="image" src={searchIcon} alt="search" className="h-8" />
       </form>
-      {handlePromptHistory()}
+      {prompt && handlePromptHistory()}
     </div>
   )
 }
