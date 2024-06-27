@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import searchIcon from './assets/search.svg'
 import closeIcon from './assets/close.svg'
+import { run } from "./gemini";
 
 export default function SearchBar() {
   const placeholder: Array<string> = [
@@ -26,17 +27,18 @@ export default function SearchBar() {
 
   function handleSubmit(event: any) {
     event?.preventDefault()
+    run(prompt)
     setPrompt("")
     // TODO: call gemini api with 'prompt' as prompt text.
 
     // edit promptHistory
-    if (prompt.length > 0) {
-      const _arr = promptHistory.slice()
-      _arr.push(prompt)
-      setPromptHistory(_arr)
-    } else {
-      console.error('prompt length not sufficient')
-    }
+    // if (prompt.length > 0) {
+    //   const _arr = promptHistory.slice()
+    //   _arr.push(prompt)
+    //   setPromptHistory(_arr)
+    // } else {
+    //   console.error('prompt length not sufficient')
+    // }
   }
 
   const handlePromptHistory = () => {
