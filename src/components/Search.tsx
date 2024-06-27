@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import searchIcon from './assets/search.svg'
+import closeIcon from './assets/close.svg'
 
 export default function SearchBar() {
   const placeholder: Array<string> = [
@@ -27,7 +29,6 @@ export default function SearchBar() {
     setPrompt("")
     // TODO: call gemini api with 'prompt' as prompt text.
 
-
     // edit promptHistory
     const _arr = promptHistory.slice()
     _arr.push(prompt)
@@ -35,16 +36,20 @@ export default function SearchBar() {
   }
 
   const handlePromptHistory = () => {
+    function handlePromptDelete() {
+      console.log('hello, world')
+    }
+
     const mapPromptHistory = promptHistory.map(promptString =>
       <li key={Math.random() * 10} className="flex">
         {promptString}
-        <input type="image" src="../../public/close.svg" alt="submit" className="text-right" />
+        <input type="image" src={closeIcon} alt="close" onClick={handlePromptDelete} />
       </li>
     )
 
     if (promptHistory.length != 0) {
       return (
-        <ul className="border-x-2 border-b-2 border-black -mt-2 pt-2 p-1 rounded-b-lg">
+        <ul className="w-full border-x-2 border-b-2 border-black -mt-2 pt-2 p-1 rounded-b-lg">
           {mapPromptHistory}
         </ul>
       )
@@ -53,10 +58,10 @@ export default function SearchBar() {
   }
 
   return (
-    <div className="flex-col">
-      <form onSubmit={handleSubmit} className="border-2 border-black p-2 rounded-lg flex">
-        <input type="text" placeholder={placeholderString} className="outline-none" value={prompt} onChange={(event) => setPrompt(event.target.value)} />
-        <input type="image" src="../../public/search.svg" alt="submit" />
+    <div className="w-9/12 md:w-3/6 lg:w-2/6 flex-col">
+      <form onSubmit={handleSubmit} className="flex items-center justify-center h-10 w-full p-1 border-2 border-black rounded-md">
+        <input type="text" placeholder={placeholderString} className="outline-none w-11/12" value={prompt} onChange={(event) => setPrompt(event.target.value)} />
+        <input type="image" src={searchIcon} alt="search" className="w-1/12" />
       </form>
       {handlePromptHistory()}
     </div>
