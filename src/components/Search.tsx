@@ -30,9 +30,13 @@ export default function SearchBar() {
     // TODO: call gemini api with 'prompt' as prompt text.
 
     // edit promptHistory
-    const _arr = promptHistory.slice()
-    _arr.push(prompt)
-    setPromptHistory(_arr)
+    if (prompt.length > 0) {
+      const _arr = promptHistory.slice()
+      _arr.push(prompt)
+      setPromptHistory(_arr)
+    } else {
+      console.error('prompt length not sufficient')
+    }
   }
 
   const handlePromptHistory = () => {
@@ -41,15 +45,17 @@ export default function SearchBar() {
     }
 
     const mapPromptHistory = promptHistory.map(promptString =>
-      <li key={Math.random() * 10} className="flex">
-        {promptString}
+      <li key={Math.random() * 10} className="bg-[#fecdd3] overflow-y-auto my-1 px-1 flex">
+        <div className="w-4/5">
+          {promptString}
+        </div>
         <input type="image" src={closeIcon} alt="close" onClick={handlePromptDelete} />
       </li>
     )
 
     if (promptHistory.length != 0) {
       return (
-        <ul className="w-full border-x-2 border-b-2 border-black -mt-2 pt-2 p-1 rounded-b-lg">
+        <ul className="w-full h-auto border-x-2 border-b-2 border-black -mt-2 pt-2 px-1 rounded-b-lg">
           {mapPromptHistory}
         </ul>
       )
@@ -59,9 +65,9 @@ export default function SearchBar() {
 
   return (
     <div className="w-9/12 md:w-3/6 lg:w-2/6 flex-col">
-      <form onSubmit={handleSubmit} className="flex items-center justify-center h-10 w-full p-1 border-2 border-black rounded-md">
+      <form onSubmit={handleSubmit} className="flex items-center justify-center h-10 w-full p-2 border-2 border-black rounded-md">
         <input type="text" placeholder={placeholderString} className="outline-none w-11/12" value={prompt} onChange={(event) => setPrompt(event.target.value)} />
-        <input type="image" src={searchIcon} alt="search" className="w-1/12" />
+        <input type="image" src={searchIcon} alt="search" className="h-8" />
       </form>
       {handlePromptHistory()}
     </div>
