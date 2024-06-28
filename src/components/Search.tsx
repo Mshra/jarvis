@@ -3,7 +3,7 @@ import searchIcon from './assets/search.svg'
 import closeIcon from './assets/close.svg'
 import { run } from "./gemini";
 
-export default function SearchBar() {
+export default function SearchBar({ theme }: { theme: "light" | "dark" }) {
   const placeholder: Array<string> = [
     "Ask me anything...",
     "Type your question here...",
@@ -12,9 +12,14 @@ export default function SearchBar() {
     "What do you need to know?"
   ];
 
+  const lightStyle: string = "flex items-center justify-center h-10 w-full p-2 border-4 border-black rounded-md group"
+  const errorStyle: string = "flex items-center justify-center h-10 w-full p-2 border-4 border-red-500 rounded-md group"
+  const darkStyle: string = "flex items-center justify-center h-10 w-full p-2 border-4 border-white rounded-md group"
+
   const [placeholderString, setPlaceholderString] = useState<string>(placeholder[0])
   const [prompt, setPrompt] = useState<string>("")
   const [promptHistory, setPromptHistory] = useState<Array<string>>(new Array())
+  const [formStyle, setFormStyle] = useState<string>(theme === "light" ? lightStyle : darkStyle)
 
   useEffect(() => {
     function changePlaceholderString() {
@@ -39,6 +44,7 @@ export default function SearchBar() {
       // run(prompt) -- runs the generative ai
     } else {
       console.error('prompt length not sufficient')
+      setFormStyle(errorStyle)
     }
     setPrompt("")
   }
@@ -70,10 +76,15 @@ export default function SearchBar() {
     return <ul></ul>
   }
 
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPrompt(event.target.value)
+    setFormStyle(formStyle)
+  }
+
   return (
     <div className="w-9/12 md:w-3/6 lg:w-2/6 flex-col">
-      <form onSubmit={handleSubmit} className="flex items-center justify-center h-10 w-full p-2 border-2 border-black rounded-md group">
-        <input type="text" placeholder={placeholderString} className="outline-none w-11/12" value={prompt} onChange={event => setPrompt(event.target.value)} />
+      <form onSubmit={handleSubmit} className={formStyle}>
+        <input type="text" placeholder={placeholderString} className="outline-none w-11/12" value={prompt} onChange={handleChange} />
         <input type="image" src={searchIcon} alt="search" className="h-8" />
       </form>
       {prompt && handlePromptHistory()}
