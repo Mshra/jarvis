@@ -29,6 +29,10 @@ export default function SearchBar() {
     event?.preventDefault()
 
     if (prompt.length > 10) {
+      if (promptHistory.find(pastPrompts => pastPrompts == prompt)) {
+        setPrompt("")
+        return
+      }
       const _arr = promptHistory.slice()
       _arr.push(prompt)
       setPromptHistory(_arr)
@@ -41,10 +45,10 @@ export default function SearchBar() {
 
   const handlePromptHistory = () => {
     function handlePromptDelete() {
+      setPrompt("")
       const _arr = promptHistory.slice()
       _arr.splice(_arr.indexOf(prompt), 1)
       setPromptHistory(_arr)
-      setPrompt("")
     }
 
     const mapPromptHistory = promptHistory.map(promptString =>
@@ -68,7 +72,7 @@ export default function SearchBar() {
 
   return (
     <div className="w-9/12 md:w-3/6 lg:w-2/6 flex-col">
-      <form onSubmit={handleSubmit} className="flex items-center justify-center h-10 w-full p-2 border-2 border-black rounded-md">
+      <form onSubmit={handleSubmit} className="flex items-center justify-center h-10 w-full p-2 border-2 border-black rounded-md group">
         <input type="text" placeholder={placeholderString} className="outline-none w-11/12" value={prompt} onChange={event => setPrompt(event.target.value)} />
         <input type="image" src={searchIcon} alt="search" className="h-8" />
       </form>
@@ -83,5 +87,5 @@ export default function SearchBar() {
  *       [ ] style prompt history lists
  *       [ ] animate the placeholders with a typing effect
  *
- * FIX: [ ] promptHistory allow duplicate values, prevent that.
+ * FIX: [x] promptHistory allow duplicate values, prevent that.
  */
