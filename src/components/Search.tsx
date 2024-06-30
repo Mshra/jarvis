@@ -5,6 +5,7 @@
  *
  * FIX: [x] promptHistory allow duplicate values, prevent that.
  */
+import { ResponseBox } from "./AI";
 
 import React, { SetStateAction, useState } from "react";
 import searchIcon from './assets/search.svg'
@@ -32,15 +33,17 @@ export default function SearchBar() {
   function handleSubmit(event: React.SyntheticEvent<HTMLFormElement>) {
     event.preventDefault()
     addPromptToHistory(promptString, promptHistory, setPromptString, setPromptHistory)
+    // TODO: generating ai respose to prompt string
+    run("what is git")
   }
 
   return (
-    <div className="w-9/12 md:w-3/6 lg:w-2/6 flex-col">
+    <div className="w-9/12 md:w-3/6 lg:w-2/6 flex-col relative">
       <form onSubmit={handleSubmit} className={lightStyle}>
         <input
           type="text"
           placeholder="Search with the power of AI..."
-          className="outline-none w-11/12"
+          className="outline-none w-11/12 position:absolute"
           value={promptString}
           onChange={event => setPromptString(event.target.value)} />
 
@@ -52,6 +55,7 @@ export default function SearchBar() {
       </form>
 
       {promptString ? <PromptHistory setPromptString={setPromptString} promptHistory={promptHistory} setPromptHistory={setPromptHistory} /> : null}
-    </div>
+      {/* <ResponseBox prompt="what is git" /> */}
+    </div >
   )
 }
