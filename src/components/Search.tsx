@@ -2,6 +2,7 @@ import React, { SetStateAction, useState } from "react";
 import searchIcon from './assets/search.svg'
 import { PromptHistory } from "./PromptHistory";
 import { lightStyle } from "./styles";
+import { ResponseBox } from "./AI";
 
 /**
  * handles addition of prompt string to promptHistory, is one of the procedures carried out after 'onSubmit' of the string in search bar.
@@ -26,9 +27,7 @@ function addPromptToHistory(promptString: string, promptHistory: Array<string>, 
     _arr.reverse()
     setPromptHistory(_arr)
   }
-
   setPromptString("")
-
   // clips out the 'promptHistory' to store exactly 5 number of strings by dropping the past entered prompts one by one.
 }
 
@@ -36,9 +35,10 @@ function addPromptToHistory(promptString: string, promptHistory: Array<string>, 
  * Main component.
  */
 export default function SearchBar() {
-  // this state is used by PromptHistory.tsx aswell
   const [promptHistory, setPromptHistory] = useState<Array<string>>(new Array())
   const [promptString, setPromptString] = useState<string>("")
+  const [showAIresponse, setShowAIResponse] = useState<boolean>(false)
+  const [searchString, setSearchString] = useState<string>("")
 
   /**
    * @param {React.SyntheticEvent<HTMLFormElement>} event - event described by the submission of form.
@@ -48,7 +48,21 @@ export default function SearchBar() {
   function handleSubmit(event: React.SyntheticEvent<HTMLFormElement>) {
     event.preventDefault()
     addPromptToHistory(promptString, promptHistory, setPromptString, setPromptHistory)
-    // TODO: generating ai respose to prompt string
+    // TODO: generating ai respose to prompt strings
+    setShowAIResponse(true)
+    setSearchString(promptString)
+  }
+
+  function handleKeyDown(event: React.KeyboardEvent) {
+    if (event.code === "ArrowDown") {
+      console.log('down arrow pressed')
+      return
+    }
+    if (event.code === "ArrowUp") {
+      console.log('Up arrow pressed')
+      return
+    }
+    return
   }
 
   return (
@@ -59,6 +73,7 @@ export default function SearchBar() {
           placeholder="Search with the power of AI..."
           className="outline-none w-11/12 position:absolute"
           value={promptString}
+          onKeyDown={handleKeyDown}
           onChange={event => setPromptString(event.target.value)} />
 
         <input
@@ -69,6 +84,7 @@ export default function SearchBar() {
       </form>
 
       {promptString ? <PromptHistory setPromptString={setPromptString} promptHistory={promptHistory} setPromptHistory={setPromptHistory} /> : null}
+      {showAIresponse ? <ResponseBox searchString={searchString} setSearchString={setSearchString} setShowAIResponse={setShowAIResponse} /> : null}
     </div >
   )
 }
