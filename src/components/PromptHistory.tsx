@@ -10,7 +10,7 @@ import { SetStateAction } from 'react'
  *
  * @param {React.Dispatch<SetStateAction<Array<string>>>} props.setPromptHistory - setState variable to change the state of promptHistory
  */
-function PromptHistory({ setPromptString, promptHistory, setPromptHistory }: { setPromptString: React.Dispatch<SetStateAction<string>>, promptHistory: Array<string>, setPromptHistory: React.Dispatch<SetStateAction<Array<string>>> }) {
+export function PromptHistory({ setPromptString, promptHistory, setPromptHistory }: { setPromptString: React.Dispatch<SetStateAction<string>>, promptHistory: Array<string>, setPromptHistory: React.Dispatch<SetStateAction<Array<string>>> }) {
   /**
    * handles the deletion of past entered prompts.
    * @param {string}index - the index of the prompt in promptHistory array which is to be deleted
@@ -23,7 +23,7 @@ function PromptHistory({ setPromptString, promptHistory, setPromptHistory }: { s
   }
 
   /**
-   * maps every prompts in the promptHistory array and wraps it with <li> html element that is to be returned to display
+   * maps every prompts in the promptHistory array and wraps it with <li> html element that is to be returned for display inside <ul>
    */
   const mapPromptHistory = promptHistory.map((promptString, index) => {
     return (
@@ -47,13 +47,12 @@ function PromptHistory({ setPromptString, promptHistory, setPromptHistory }: { s
   */
   if (promptHistory.length > 0) {
     return (
-      <ul className="w-full h-auto border-x-2 border-b-2 border-black -mt-2 pt-2 px-1 rounded-b-lg absolute">
+      <ul className="w-full h-auto border-x-4 border-b-4 border-black -mt-2 pt-2 px-1 rounded-b-lg absolute z-10 bg-white">
         {mapPromptHistory}
       </ul>
     )
   }
 }
-export { PromptHistory }
 
 // TODO: [ ] add functionality font for prompt searching during typing
 //       [ ]
